@@ -10,5 +10,5 @@ export const covid19Api = axios.create({
 // news api 3669b0deabbd4827810cda4cc61cea5d
 
 export const newsApi = axios.create({
-    baseURL : "http://newsapi.org/"
+    baseURL : "https://newsapi.org/"
 });
