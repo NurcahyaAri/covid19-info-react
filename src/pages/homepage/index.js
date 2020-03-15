@@ -16,7 +16,10 @@ import {
     Grid,
     Card,
     CardContent,
-    Typography
+    Container,
+    Typography,
+    Table,
+    TableContainer,
 } from '@material-ui/core';
 import MaterialTable from 'mui-datatables';
 import {
@@ -222,17 +225,35 @@ const Homepage = (props) => {
                             <h4>Global</h4>
                         </Grid>
                     </Grid>
-                    <CardContent>
-                        <MaterialTable
-                            columns={columns}
-                            data={tabledata}
-                            options={{
-                                selectableRows: "none"
-                            }}
-                        />
-                    </CardContent>
+                    <Container>
+                        <TableContainer>
+                            <Table>
+                                <MaterialTable
+                                    columns={columns}
+                                    data={tabledata}
+                                    options={{
+                                        selectableRows: "none",
+                                        responsive: "scrollFullHeight"
+                                    }}
+                                />
+                            </Table>
+                        </TableContainer>
+                    </Container>
                 </Card>
-                
+                <Grid
+                    container
+                    direction="column"
+                    justify="flex-start"
+                    alignItems="center"
+                    style={{marginTop: 50, marginBottom: 20}}
+                >
+                    <Grid items xs={12} lg={12} md={12} sm={12}>
+                        Made By Love
+                    </Grid>
+                    <Grid items>
+                        API From <a href="https://github.com/mathdroid/covid-19-api">Mathdroid/covid-19-api</a>
+                    </Grid>
+                </Grid>
             </Grid>
         </Grid>
     )
