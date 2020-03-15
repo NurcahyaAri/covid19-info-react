@@ -2,7 +2,7 @@
   "name": "covid19",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://nurcahyaari.github.io/covid19-info",
+  "homepage": "http://nurcahyaari.github.io/covid19-info-react",
   "dependencies": {
     "@material-ui/core": "^4.9.5",
     "@material-ui/icons": "^4.9.1",
@@ -11,6 +11,7 @@
     "@testing-library/user-event": "^7.1.2",
     "chart.js": "^2.9.3",
     "momentjs": "^2.0.0",
+    "mui-datatables": "^2.14.0",
     "react": "^16.13.0",
     "react-chartjs-2": "^2.9.0",
     "react-dom": "^16.13.0",

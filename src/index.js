@@ -7,7 +7,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 import store from './config/store';
-import 'rsuite/dist/styles/rsuite-default.css';
+
 ReactDOM.render(
     <Provider store={store}>
         <App />

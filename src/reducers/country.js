@@ -10,15 +10,7 @@ const initState = {
 const action = (state = initState, data) => {
     switch(data.type) {
         case Country.GET_ALL : {
-            let countriesData = [];
-            if(state.countries.length === 0){
-                for (const val in Object.keys(data.data)) {
-                    countriesData.push({
-                        "name" : val,
-                        "countryId" : data.data[val]
-                    });
-                }
-            }
+            let countriesData = Object.values(data.data.countries);;
             return {
                 ...state,
                 countries : countriesData

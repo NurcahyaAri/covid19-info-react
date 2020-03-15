@@ -14,7 +14,15 @@
 
 // constant for getting all detail in the country
     export const CountryDetail = {
-        "SET_DATA" : "SET_DATA",
+        "SET_DATA" : "SET_LIST_DATA",
+        "SET_DEFAULT_COUNTRY" : "SET_COUNTRTY_DETAIL_DATA",
         "DELETE_DATA" : "DELETE_DATA"
     };
 // end constant for getting all detail in the country
+
+
+// constant for getting data from daily
+    export const Daily = {
+        "SET_DATA" : "SET_DAILY_DATA"
+    }
+// end constant for getting data from daily

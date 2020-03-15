@@ -1,22 +1,33 @@
 import {CountryDetail} from '../config/constant';
 
 const initState = {
-    confirmed : {},
-    recovered : {},
-    deaths : {},
-    lastUpdate : ""
+    defaultCountry : {
+        confirmed : {},
+        recovered : {},
+        deaths : {},
+        lastUpdate : ""
+    },
+    list : []
 };
 
 const action = (state = initState, data) => {
     switch(data.type){
+        case CountryDetail.SET_DEFAULT_COUNTRY : {
+            return {
+                ...state,
+                defaultCountry : {
+                    confirmed : data.data.confirmed,
+                    recovered : data.data.recovered,
+                    deaths : data.data.deaths,
+                    lastUpdate : data.data.lastUpdate
+                }
+            };
+        }
         case CountryDetail.SET_DATA : {
             return {
                 ...state,
-                confirmed : data.data.confirmed,
-                recovered : data.data.confirmed,
-                deaths : data.data.deaths,
-                lastUpdate : data.data.lastUpdate
-            };
+                list : data.data
+            }
         }
         case CountryDetail.DELETE_DATA : {
             return initState;
