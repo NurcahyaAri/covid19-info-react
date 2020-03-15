@@ -6,9 +6,22 @@ export const getCountryDetailAsync = (countryId = "id") => {
         const detail = await covid19Api.get(`api/countries/${countryId}`);
         if(detail) {
             dispatch({
-                "type" : CountryDetail.SET_DEFAULT_COUNTRY,
-                "data" : detail.data
+                type : CountryDetail.SET_DEFAULT_COUNTRY,
+                data : detail.data
             });
+        }
+    }
+}
+
+
+export const setGlobalDataAsync = () => {
+    return async dispatch => {
+        const res = await covid19Api.get(`api/`);
+        if(res.data){
+            dispatch({
+                type : CountryDetail.SET_GLOBAL_DATA,
+                data : res.data
+            })
         }
     }
 }

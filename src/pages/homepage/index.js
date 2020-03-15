@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import {
     getCountryDetailAsync,
+    setGlobalDataAsync,
     setCountryListAsync
 } from '../../actions/countryDetail';
 import {
@@ -10,13 +11,20 @@ import {
 import {
     getCountries
 } from '../../actions/country';
-
+import {
+    getNewsAsync
+} from '../../actions/news';
 
 import {
     Grid,
     Card,
+    Avatar,
     CardContent,
     Container,
+    List,
+    ListItem,
+    ListItemText,
+    ListItemAvatar,
     Typography,
     Table,
     TableContainer,
@@ -30,6 +38,27 @@ import moment from 'moment';
 
 const Homepage = (props) => {
     const [doughnut, setdoughnut] = useState({
+        labels: [
+            'Confirmed',
+            'Deaths',
+            'Recovered',
+        ],
+        datasets: [{
+            data: [0,0,0],
+            backgroundColor: [
+                '#FFCE56',
+                '#FA2D58',
+                '#15F900',
+            ],
+            hoverBackgroundColor: [
+                '#FFCE56',
+                '#FF6384',
+                '#36A2EB',
+            ]
+        }]
+    });
+
+    const [doughnutGlobal, setdoughnutGlobal] = useState({
         labels: [
             'Confirmed',
             'Deaths',
@@ -74,6 +103,20 @@ const Homepage = (props) => {
 
     useEffect(() => {
         if(props.detail.defaultCountry.lastUpdate !== ""){
+            // set doughnut for global 
+            setdoughnutGlobal({
+                ...doughnutGlobal,
+                datasets: [{
+                    ...doughnutGlobal.datasets[0],
+                    data : [
+                        props.detail.global.confirmed.value,
+                        props.detail.global.deaths.value,
+                        props.detail.global.recovered.value,
+                    ]
+                }]
+            });
+
+            // set doughnut for indonesia only
             setdoughnut({
                 ...doughnut,
                 datasets: [{
@@ -156,14 +199,15 @@ const Homepage = (props) => {
                     deaths : country[i].deaths,
                     lastUpdate : moment(country[i].lastUpdate).format("DD/MM/YYYY hh:mm:ss")
                 });
-                console.log(tableGlobal);
             }
             settabledata(tableGlobal);
         } else {
             props.setCountry();
+            props.getGlobalData();
             props.getCountryDetailById();
             props.setDailyChart();
             props.setCountryList();
+            props.getNews();
         }
     }, [props.detail]);
 
@@ -178,8 +222,21 @@ const Homepage = (props) => {
                 <Card style={{width: "80vw"}}>
                     <CardContent>
                         <Grid container direction="column" alignItems="center">
+                                <Grid items>
+                                    <h2>Global</h2>
+                                </Grid>
+                            </Grid>
+                            <Doughnut data={doughnutGlobal}/>
                             <Grid items>
-                                <h2>Corona In Indonesia</h2>
+                                <Typography>
+                                    Last Update = {moment(props.detail.global.lastUpdate).format("DD/MM/YYYY hh:mm:ss")}
+                                </Typography>
+                            </Grid> 
+                    </CardContent>
+                    <CardContent>
+                        <Grid container direction="column" alignItems="center">
+                            <Grid items>
+                                <h2>Indonesia</h2>
                             </Grid>
                         </Grid>
                         <Doughnut data={doughnut}/>
@@ -239,6 +296,36 @@ const Homepage = (props) => {
                             </Table>
                         </TableContainer>
                     </Container>
+                    <Container>
+                        <List style={{marginTop: 50}}>
+                            {
+                                props.news.articles.map((data) => {
+                                    return (
+                                        <ListItem alignItems="flex-start">
+                                            <ListItemAvatar>
+                                                <Avatar alt={data.author} src={data.urlToImage} />
+                                            </ListItemAvatar>
+                                            <ListItemText
+                                            primary={
+                                                <a href={data.url}>{data.title}</a>
+                                            }
+                                            secondary={
+                                                <React.Fragment>
+                                                    <div>
+                                                        {data.content}
+                                                    </div>
+                                                    <div>
+                                                        {moment(data.publishedAt).format("DD/MM/YYYY hh:mm:ss")}
+                                                    </div>
+                                                </React.Fragment>
+                                            }
+                                            />
+                                        </ListItem>
+                                    )
+                                })
+                            }
+                        </List>
+                    </Container>
                 </Card>
                 <Grid
                     container
@@ -247,9 +334,6 @@ const Homepage = (props) => {
                     alignItems="center"
                     style={{marginTop: 50, marginBottom: 20}}
                 >
-                    <Grid items xs={12} lg={12} md={12} sm={12}>
-                        Made By Love
-                    </Grid>
                     <Grid items>
                         API From <a href="https://github.com/mathdroid/covid-19-api">Mathdroid/covid-19-api</a>
                     </Grid>
@@ -263,15 +347,18 @@ const mapStateToProps = (state) => {
     return {
         detail : state.countryDetail,
         daily : state.daily,
+        news : state.news,
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         getCountryDetailById : (id = "ID") => dispatch(getCountryDetailAsync(id)),
+        getGlobalData : () => dispatch(setGlobalDataAsync()),
         setDailyChart : () => dispatch(setDailyChartAsync()),
         setCountryList : () => dispatch(setCountryListAsync()),
         setCountry : () => dispatch(getCountries()),
+        getNews : () => dispatch(getNewsAsync()),
     }
 }
 

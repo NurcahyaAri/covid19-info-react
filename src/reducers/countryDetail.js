@@ -7,6 +7,12 @@ const initState = {
         deaths : {},
         lastUpdate : ""
     },
+    global : {
+        confirmed : {},
+        recovered : {},
+        deaths : {},
+        lastUpdate : ""
+    },
     list : []
 };
 
@@ -22,6 +28,17 @@ const action = (state = initState, data) => {
                     lastUpdate : data.data.lastUpdate
                 }
             };
+        }
+        case CountryDetail.SET_GLOBAL_DATA : {
+            return {
+                ...state,
+                global : {
+                    confirmed : data.data.confirmed,
+                    recovered : data.data.recovered,
+                    deaths : data.data.deaths,
+                    lastUpdate : data.data.lastUpdate
+                }
+            }
         }
         case CountryDetail.SET_DATA : {
             return {
